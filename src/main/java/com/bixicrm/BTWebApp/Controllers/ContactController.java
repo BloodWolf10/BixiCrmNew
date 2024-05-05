@@ -6,6 +6,8 @@ package com.bixicrm.BTWebApp.Controllers;
 
 import com.bixicrm.BTWebApp.entity.Contact;
 import com.bixicrm.BTWebApp.service.ContactService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @Controller
 public class ContactController {
-    
+      private static final Logger logger = LogManager.getLogger(ContactController.class);
     
    @Autowired
     private ContactService contactservice;
@@ -35,8 +37,15 @@ public class ContactController {
     public String getContacts(Model model)
     {
         
+       try{
         model.addAttribute("contactList", contactservice.getAllContacts());
-        return "viewContacts";
+        return "viewContacts";}
+       
+       catch(Exception e)
+       {
+           logger.fatal("Unable to retrieve contact page" + e);
+           return"/";
+       }
     }
     
   // Mapping for all new Contacts   
@@ -44,8 +53,16 @@ public class ContactController {
      @GetMapping("/Contact")
     public String addContact(Model model)
     {
+        
+        try{
         model.addAttribute("contact",new Contact());
-        return "addContact";
+        return "addContact";}
+        
+        catch(Exception e)
+        {
+            logger.fatal("Unable to return contact page "+ e );
+            return"/";
+        }
     }
     
     
@@ -55,26 +72,50 @@ public class ContactController {
         @PostMapping("/saveContact")
     public String saveContact(Contact contact)
     {
+        try{
         contactservice.SaveOrUpdateContact(contact);
         
-        return"redirect:/getContacts";
+        return"redirect:/getContacts";}
+        
+        
+        catch(Exception e)
+        {
+            logger.fatal("Unable to save contact: "+ contact.getFirstName() + "" + contact.getLastName());
+            return"/";
+        }
     }
     
     
     @GetMapping("/editContact/{id}")
 public String editContact(@PathVariable Long id, Model model) {
+    
+    try{
     Contact contact = contactservice.getContactById(id);
     model.addAttribute("contact", contact);
-    return "editContact";
+    return "editContact";}
+    
+    catch(Exception e)
+    {
+        logger.warn("Unable to retrieve edit page" + e.getMessage() + id);
+        return"/";
+    }
 }
     
     // To Save Edited Client 
     @PostMapping("/editSaveContact")
     public String editSaveContact( Contact contact)
-    {       
-         contactservice.SaveOrUpdateContact(contact);
+    {  
         
-        return"redirect:/getContacts";
+       try{ 
+         contactservice.SaveOrUpdateContact(contact);
+         logger.info("Contact edited: " + contact.getId());
+        return"redirect:/getContacts";}
+       
+       catch(Exception e)
+       {
+           logger.fatal("Unable to update edited Contact: "+ contact.getId() + e.getMessage());
+           return"/";
+       }
         
     }
     
@@ -83,9 +124,16 @@ public String editContact(@PathVariable Long id, Model model) {
     
     public String deleteContact(@PathVariable Long id, Model model)
     {
+        try{
         contactservice.deleteContact(id);
-       
-        return "redirect:/getContacts";
+        logger.info("Contact delete: ");
+        return "redirect:/getContacts";}
+        
+        catch( Exception e)
+        {
+            logger.fatal("Unable to delete contact: " + id +""+ e.getMessage());
+            return"/";
+        }
     }
     
 }

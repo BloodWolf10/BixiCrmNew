@@ -6,6 +6,8 @@ package com.bixicrm.BTWebApp.Controllers;
 
 import com.bixicrm.BTWebApp.entity.User;
 import com.bixicrm.BTWebApp.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller
 public class UserController {
     
+      private static final Logger logger = LogManager.getLogger(UserController.class);
+    
     @Autowired
     private UserService userservice;
     
@@ -32,8 +36,15 @@ public class UserController {
     public String getUsers(Model model)
     {
         
+        try{
         model.addAttribute("userList", userservice.getAllUsers());
-        return "viewUsers";
+        return "viewUsers"; }
+        
+        catch(Exception e)
+        {
+            logger.warn("Unable to Retrieve user list" + e );
+            return"/dashboard";
+        }
     }
     
     
@@ -41,32 +52,63 @@ public class UserController {
     @GetMapping("/addUser")
     public String addUser(Model model)
     {
+       try{
         model.addAttribute("user",new User());
-        return "addUser";
+        return "addUser"; }
+       
+       catch(Exception e)
+       {
+           logger.fatal("Unable to Retrieve User Form"+e);
+           return"/";
+       }
     }
     
     @PostMapping("/saveUser")
     public String saveUser(User user)
     {
-        userservice.SaveOrUpdateUser(user);
         
-        return"redirect:/getUsers";
+        try{
+        userservice.SaveOrUpdateUser(user);
+        logger.info("User added: " + user);
+        return"redirect:/getUsers"; }
+        
+        catch(Exception e)
+        {
+            logger.fatal("Unable to Save User to Database" + e + user.getId());
+            return"/";
+        }
     }
     
   @GetMapping("/editUser/{id}")
 public String editUser(@PathVariable Long id, Model model) {
-    User user = userservice.getUserById(id);
+    
+     User user = userservice.getUserById(id);
+   try{
+   
     model.addAttribute("user", user);
-    return "editUser";
+    return "editUser"; }
+   
+   catch(Exception E)
+   {
+       logger.fatal("Unable to Retrieve User Edit Page" + E + user);
+       return"/";
+   }
 }
     
       // To Save Edited User
     @PostMapping("/editSaveUser")
     public String editSaveUser( User user)
-    {       
+    { 
+       try{
          userservice.SaveOrUpdateUser(user);
-        
-        return"redirect:/getUsers";
+        logger.info("User edited: "+user.getId());
+        return"redirect:/getUsers";}
+       
+       catch(Exception e)
+       {
+           logger.fatal("Unable to Save Edited User" + e + user);
+           return"/";
+       }
         
     }
     
@@ -75,9 +117,19 @@ public String editUser(@PathVariable Long id, Model model) {
     
     public String deleteUser(@PathVariable Long id, Model model)
     {
+        
+       try{
         userservice.deleteUser(id);
        
-        return "redirect:/getUsers";
+        return "redirect:/getUsers"; }
+       
+       catch(Exception e)
+       {
+       
+       logger.fatal("Deleting User failed" + e + id);
+       return"/";
+       }
+       
     }
 
 

@@ -44,7 +44,7 @@ public class ClientController {
         
         catch(Exception e)
         {
-            logger.fatal("Unable to retrieve client list" + e);
+            logger.fatal("Unable to retrieve client list" + e.getMessage());
             return"/";
         }
        
@@ -57,11 +57,13 @@ public class ClientController {
     {
        try{
         model.addAttribute("client",new Client());
+        
+      
         return "ClientRegistration"; }
        
        catch(Exception e)
        {
-           logger.warn("Unable to retrieve client page" + e);
+           logger.warn("Unable to retrieve client page" + e.getMessage());
            return"/";
        }
     }
@@ -75,13 +77,13 @@ public class ClientController {
     {
         try{
         clientservice.SaveOrUpdateClient(client);
-        logger.info("Client Added"+client);
+        logger.info("Client Added:"+client.getId());
          return"redirect:/getClients";
         }
         
         catch(Exception e)
         {
-            logger.fatal("Unable to Save Client Information" + e + client);
+            logger.fatal("Unable to Save Client Information" + e.getMessage() + client.getCompanyName());
             return"/";
         }
        
@@ -110,7 +112,7 @@ public String editClient(@PathVariable Long id, Model model) {
     
     catch(Exception e)
     {
-        logger.fatal("Unable to Edit Client"+ e+client);
+        logger.fatal("Unable to Edit Client"+ e.getMessage()+client);
         return"/";
     }
 }
@@ -121,12 +123,12 @@ public String editClient(@PathVariable Long id, Model model) {
     {    
         try{
          clientservice.SaveOrUpdateClient(client); 
-        
+          logger.info("Client Edited:" + client.getId());
         return"redirect:/getClients"; }
         
         catch(Exception e)
                 {
-                   logger.fatal("Unable to Update Client"+e+client);
+                   logger.fatal("Unable to Update Client"+e.getMessage()+client);
                     return"/";
                 }
         
@@ -144,7 +146,7 @@ public String editClient(@PathVariable Long id, Model model) {
        
        catch(Exception e)
        {
-           logger.fatal("Unable to Delete Client"+e+id);
+           logger.fatal("Unable to Delete Client"+e.getMessage()+id);
            return"/";
        }
     } 
