@@ -44,7 +44,7 @@ public class ContactController {
        catch(Exception e)
        {
            logger.fatal("Unable to retrieve contact page" + e);
-           return"/";
+           return"/dashboard";
        }
     }
     
@@ -61,7 +61,7 @@ public class ContactController {
         catch(Exception e)
         {
             logger.fatal("Unable to return contact page "+ e );
-            return"/";
+            return"/getContacts";
         }
     }
     
@@ -81,7 +81,7 @@ public class ContactController {
         catch(Exception e)
         {
             logger.fatal("Unable to save contact: "+ contact.getFirstName() + "" + contact.getLastName());
-            return"/";
+            return"/getContacts";
         }
     }
     
@@ -97,7 +97,7 @@ public String editContact(@PathVariable Long id, Model model) {
     catch(Exception e)
     {
         logger.warn("Unable to retrieve edit page" + e.getMessage() + id);
-        return"/";
+        return"/getContacts";
     }
 }
     
@@ -114,7 +114,7 @@ public String editContact(@PathVariable Long id, Model model) {
        catch(Exception e)
        {
            logger.fatal("Unable to update edited Contact: "+ contact.getId() + e.getMessage());
-           return"/";
+           return"/getContacts";
        }
         
     }
@@ -132,8 +132,24 @@ public String editContact(@PathVariable Long id, Model model) {
         catch( Exception e)
         {
             logger.fatal("Unable to delete contact: " + id +""+ e.getMessage());
-            return"/";
+            return"/getContacts";
         }
+    }
+    
+    
+    @GetMapping("/contact/{id}")
+    public String showContactDetails(@PathVariable Long id, Model model) {
+ try{
+    Contact contact = contactservice.getContactById(id);
+    model.addAttribute("contact", contact);
+    return "contact-details";} 
+ 
+   catch(Exception e)
+    {
+        logger.warn("Unable to retrieve Contact page" + e.getMessage() + id);
+        return"/getContacts";
+    }
+ 
     }
     
 }

@@ -112,7 +112,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
           <th>Lastname</th>
           <th>Email</th>
           <th>PhoneNumber</th>
-          <th>Notes</th>
+<!--          <th>Notes</th>-->
           <th>Actions</th>
           </tr>
       </thead>
@@ -123,15 +123,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
           <td th:text="${contact.LastName}"></td>
           <td th:text="${contact.Email}"></td>
           <td th:text="${contact.PhoneNumber}"></td>
-          <td th:text="${contact.Note}"></td>
+<!--          <td th:text="${contact.Note}"></td>-->
           <td>
               
              <button type="button" class="btn btn-success">
     <a th:href="@{/editContact/{id}(id=${contact.id})}">Edit</a>
 </button>
-          
+   <button type="button" class="btn btn-primary"><a th:href="@{/contact/{id}(id=${contact.id})}">Details</a></button>        
  <button type="button" class="btn btn-danger"><a th:href="@{/deleteContact/{id}(id=${contact.id})}">Delete</a></button> </td>
-          
+
         </tr>
        
      

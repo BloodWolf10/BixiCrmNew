@@ -43,11 +43,10 @@ public class UserController {
         catch(Exception e)
         {
             logger.warn("Unable to Retrieve user list" + e );
-            return"/dashboard";
+            return"/";
         }
     }
-    
-    
+ 
     
     @GetMapping("/addUser")
     public String addUser(Model model)
@@ -67,8 +66,10 @@ public class UserController {
     public String saveUser(User user)
     {
         
-        try{
+        
         userservice.SaveOrUpdateUser(user);
+        
+        try{
         logger.info("User added: " + user);
         return"redirect:/getUsers"; }
         

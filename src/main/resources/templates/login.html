@@ -128,7 +128,7 @@
     </div>
     
     <form>
-      <div class="form-group" action="/dashboard">
+      <div class="form-group" th:action="@{/login}">
         <label for="username">Username</label>
         <input type="text" id="username" class="form-control" placeholder="Enter your username">
       </div>
@@ -136,7 +136,7 @@
         <label for="password">Password</label>
         <input type="password" id="password" class="form-control" placeholder="Enter your password">
       </div>
-        <button type="submit" class="btn btn-primary login-btn" href="/dashboard"><a href="/dashboard">Login</a> </button>
+        <button type="submit" class="btn btn-primary login-btn"> <a href="/dashboard">Login</a> </button>
     </form>
   </div>
 

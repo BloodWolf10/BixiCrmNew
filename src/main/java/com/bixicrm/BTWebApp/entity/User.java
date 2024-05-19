@@ -4,6 +4,7 @@
  */
 package com.bixicrm.BTWebApp.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,9 +12,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  *
@@ -22,7 +32,7 @@ import jakarta.persistence.Table;
 
 @Entity
  @Table(name="user_")
-public class User {
+public class User implements UserDetails{
     
    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,11 +45,13 @@ public class User {
     String LastName;
     
     @Column(name="User_Email")
-    String Email;
+    String email;
     
     @Column(name="User_Password")
-    String Password;
+    String password;
     
+    
+     String User2; 
    
 //  @OneToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "Client_id")
@@ -49,12 +61,14 @@ public class User {
         super();
     }
 
-    public User( String FirstName, String LastName, String Email, String Password, Client client) {
+    public User( String FirstName, String LastName, String Email, String Password, Client client, String User2) {
         
         this.FirstName = FirstName;
         this.LastName = LastName;
-        this.Email = Email;
-        this.Password = Password;
+//        this.username = Username;
+        this.password = Password;
+        this.User2 = User2;
+        this.email = Email;
 //        this.client = client;
     }
            
@@ -84,20 +98,37 @@ public class User {
         this.LastName = Last_Name;
     }
 
+//    public void setUsername(String Username) {
+//        this.username = Username;
+//    }
+//
+//    public String getUser2() {
+//        return User2 = this.username;
+//    }
+
+//    public void setUser2(String User2) {
+//        this.User2 = User2;
+//    }
+
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String Email) {
-        this.Email = Email;
+        this.email = Email;
     }
 
+    
+    
+
+
+   @Override
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String Password) {
-        this.Password = Password;
+        this.password = Password;
     }
 
 //    public Client getClient() {
@@ -110,6 +141,66 @@ public class User {
 //        }
 //        client.setId(Client_id);
 //    }
+    
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Role> roleList;
+
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
+    }
+    
+    
+    
+  
+    
+    
+    /* UserDetails Service Method Implementations */
+
+
+
+    @Override
+    public String getUsername() {
+       return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorityList = new ArrayList<>();
+        
+        for(Role role: roleList )
+        {
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getRole());
+            authorityList.add(authority);
+        }
+        
+        return authorityList;
+    }
+    
     
     
 }

@@ -21,6 +21,13 @@ public class LoginController {
         return "login";
     }
     
+    
+    @GetMapping("/userdash")
+    public String getUserdash()
+    {
+        
+        return "dashboard-user";
+    }
    
     
 }

@@ -28,7 +28,7 @@ public class Client {
     
     
 
-    public Client( String Firstname, String Lastname, String PhoneNumber, String Email, String Role, Date CreateDate, String CompanyName, String StreetAddress, String City, String Country, String ExpirationDate, String CardType, String AccountType, String CardNumber, String Password) {
+    public Client( String Firstname, String Lastname, String PhoneNumber, String Email, String Role, String CompanyName, String StreetAddress, String City, String Country, String ExpirationDate, String CardType, String AccountType, String CardNumber, String Password) {
         
       
         this.Firstname = Firstname;

@@ -4,18 +4,14 @@
  */
 package com.bixicrm.BTWebApp.repository;
 
-import com.bixicrm.BTWebApp.entity.User;
+import com.bixicrm.BTWebApp.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author gavin
  */
-
-@Repository
-public interface UserDAO extends JpaRepository<User,Long>{
+public interface RoleDAO extends JpaRepository<Role,Integer>{
     
-     User findByEmail(String email);
-    
+    Role findByName(String Name);
 }

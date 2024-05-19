@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Details</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Add your custom styles here */
+        body {
+            background-color: #f8f9fa;
+          
+        }
+        
+        .navbar {
+            background-color: #ffc900;
+        }
+
+        .navbar-brand {
+            color: #000;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+        }
+
+        .logo {
+            height: 100px;
+            width: auto;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .card-text {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .card-footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            padding: 15px 20px;
+            text-align: right;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            margin-left: 10px;
+            border-radius: 20px;
+        }
+
+        .btn-primary {
+            background-color: #ffc900;
+            border-color: #ffc900;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background-color: #333;
+            border-color: #333;
+            color: #fff;
+        }
+
+        .btn:hover {
+            opacity: 0.8;
+        }
+
+        .footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 15px 0;
+             margin-top: 10rem;
+        }
+
+        .footer p {
+            margin: 0;
+        }
+        
+        .email{
+            height:30px;
+            width:auto;
+        }
+        
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">BIXI CRM</a>
+        <img th:src="@{/images/BixiLogo.png}" class="logo" alt="Bixi CRM Logo">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/getContacts">Contacts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">LogOut</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h1>Contact Details</h1>
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${contact.FirstName} + ' ' + ${contact.LastName}"></h5>
+            <br>
+            
+            <h6>  Contact Info</h6>
+            <p class="card-text"> <span> <img  class="email" src="/images/email.png"/> </span><span th:text="${contact.Email}"></span></p>
+            <p class="card-text"> <img  class="email" src="/images/phone.png"/> </span><span th:text="${contact.PhoneNumber}"></span></p>
+            <br>
+            <h6> Notes </h6>
+            <p class="card-text"><span th:text="${contact.Note}"></span></p>
+        </div>
+        <div class="card-footer">
+            <!-- Buttons to call and email the contact -->
+            <a th:href="'tel:' + ${contact.PhoneNumber}" class="btn btn-primary">Call</a>
+            <a th:href="'mailto:' + ${contact.Email}" class="btn btn-secondary">Email</a>
+        </div>
+    </div>
+</div>
+
+<footer class="bg-dark text-white text-center py-4 footer">
+    <p>&copy; 2024 BixiCRM. All rights reserved.</p>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
